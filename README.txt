@@ -34,6 +34,13 @@ GROK AND METATRADER INTEGRATION ROADMAP (NOT IMPLEMENTED)
 No account credentials or API keys are needed or collected.
 
 
+VERSION 3 ADDITIONS — MANUAL SIGNAL COACH
+- Signal Coach tab evaluates manually entered H1 trend, M15 structure, closed M5 trigger, spread and news status.
+- Displays BUY SETUP, SELL SETUP or WAIT with transparent reasons.
+- Requires user-entered invalidation and target levels; only passes planned reward:risk of at least 1.5:1.
+- Copies the setup into the risk planner for review. No live quotes, AI API, MT5 connection or trade execution.
+- New service worker cache version ensures updated files can be fetched after redeployment.
+
 VERSION 2 ADDITIONS — DUAL SCALPING MODES
 - New 'Scalp modes' tab: evaluate observed spread, ATR(14) M5, H1/M15 trend, M5 confirmation, M1 noise, and high-impact news risk.
 - Explicit DEMO rules: Quick $1–$2; Selective $3–$5; or WAIT. This is not a real-time market monitor or AI signal, and thresholds have not been validated.
