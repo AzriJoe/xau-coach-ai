@@ -1,4 +1,4 @@
-const CACHE='xau-coach-v6';
+const CACHE='xau-coach-v7';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{const names=await caches.keys();await Promise.all(names.filter(n=>n.startsWith('xau-coach-')&&n!==CACHE).map(n=>caches.delete(n)));await self.clients.claim()})())});
