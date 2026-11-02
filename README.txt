@@ -11,7 +11,7 @@ WHAT IS INCLUDED
 - manifest.webmanifest, service worker and icon for installable offline app
 
 IMPORTANT LIMITATIONS
-- No real money trading, order execution, signals, broker connection, automated position management, live account state or market data.
+- No real money trading, order execution, automated position management, or live account state. The optional private Tailscale dashboard receives market candles only.
 - Position size and P/L are approximate. Broker contract specs, spreads, commissions, financing, slippage, market gaps, and currency conversion may change outcomes. Simulator records exclude trading costs.
 - Trade counter and daily limit are calculated from records in this browser, not real MT5 trades.
 - The app does not call Grok or any other AI API.
@@ -34,6 +34,12 @@ GROK AND METATRADER INTEGRATION ROADMAP (NOT IMPLEMENTED)
 No account credentials or API keys are needed or collected.
 
 
+VERSION 4 ADDITIONS — READ-ONLY MT5 FEED PROTOTYPE
+- Optional live relay card polls a configured Worker /latest URL every 15 seconds and shows signal, symbol/price, feed age, and levels.
+- Requires a separately deployed Cloudflare Worker + KV namespace and an MT5 desktop Expert Advisor. Setup is in connector/SETUP.txt.
+- The EA transmits public market candles, bid, and spread only; it does not read account data or place trades.
+- Prototype is unvalidated; use demo/paper review and check calendar risk manually.
+
 VERSION 3 ADDITIONS — MANUAL SIGNAL COACH
 - Signal Coach tab evaluates manually entered H1 trend, M15 structure, closed M5 trigger, spread and news status.
 - Displays BUY SETUP, SELL SETUP or WAIT with transparent reasons.
@@ -49,3 +55,19 @@ VERSION 2 ADDITIONS — DUAL SCALPING MODES
 - Journal entries include the selected mode.
 - Existing V1 localStorage journal uses the same storage key and should migrate on the SAME browser origin. Export a backup first before deploying or replacing a prior version.
 - No XM API, TradingView API, Grok API, or live orders included; manual conditions only.
+
+
+VERSION 12 LIVE-FIRST INTERFACE — LESS MANUAL INPUT
+- Live Coach is the default screen. The private Tailscale dashboard auto-connects on load, hides the URL field, and checks for updates every second; the EA sends market data every 15 seconds. The manual assessment is collapsed and optional.
+- Active setups show a red shaded entry-to-stop risk zone and a green shaded entry-to-target zone, extended into the chart's forward area. BUY and SELL zones appear on the appropriate side of entry.
+- Live Coach provides the H4/H1/M15/M5 rule result and chart without requiring manual entry of prices, trends, triggers, stops, or targets. High-impact USD news remains a manual gate; unknown or nearby news forces WAIT, and a clear-news check expires after 30 minutes. The detailed manual assessment is still available under “Manual assessment (optional)”.
+- Current BUY/SELL setup, if present, is marked with the relay's entry reference, stop/invalidation, and one 1.5R target. WAIT leaves the chart unannotated apart from candles.
+- Signal rules: H1/M15 EMA20/50 alignment, six-bar closed M5 breakout, RSI(14), MACD(12,26,9), tick-volume and ATR filters, $0.60 max spread, plus 2-of-3 confirmation from H4 EMA20/50, Stochastic(14,3,3) cross, and five-bar A/D direction. No account, position, or trade-history data is used.
+- The private Tailscale root serves this dashboard and /latest from the package. The public GitHub Pages site remains separate. The feed is read-only and places no orders.
+- This preview does not show historical signal markers or validated win-rate statistics. Test the rule output in paper mode before relying on it.
+
+
+VERSION 13 LIVE ANALYTICS EXPLAINER
+- Adds an automatically updated plain-language interpretation of the live conditions: timeframe bias, RSI/MACD/Stochastic context, A/D direction, tick volume, M5 breakout, ATR and spread filters.
+- Describes conflicting evidence in plain language (for example, a bearish trend with oversold Stochastic or bullish MACD) and clarifies why the final state is WAIT or a rule-aligned setup.
+- Does not call an AI service, predict price, or use account, position, or trade-history data. News remains a manual check.
